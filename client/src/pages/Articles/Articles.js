@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import SaveBtn from "../../components/SaveBtn";
 import API from "../../utils/API";
-import { Link } from "react-router-dom";
-
 
 class Articles extends Component {
   state = {
@@ -22,12 +20,29 @@ class Articles extends Component {
       .catch(err => console.log(err));
   };
 
+  newArticles = () => {
+    API.searchArticles(this.state.search)
+      .then((res) => {
+        console.log(res);
+        this.setState({ articles: res.data.response.docs, search: '' })
+      })
+        
+    .catch(err => console.log(err));
+  }
+
   newArticle = id => {
     API.newArticle(id)
       .then(res => this.loadArticles())
       .catch(err => console.log(err));
   };
 
+  saveArticle = (id, newArticle) => {
+    API.saveArticle(id, newArticle)
+      .then(res => this.loadArticles())
+      .catch(err => console.log(err));
+  };
+
+  
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -35,16 +50,11 @@ class Articles extends Component {
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveArticle({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
+  handleFormSubmit = () => {
+    if (this.state.search) {
+      this.setState({
+        search: ''
       })
-        .then(res => this.loadArticles())
-        .catch(err => console.log(err));
     }
   };
 
@@ -54,7 +64,10 @@ class Articles extends Component {
         <div className="col">
           <div className="jumbotron text-center">
             <h1>New York Times React App</h1>
-            <p>Use the Search bar above to find new articles</p>
+            <div className="row">
+              <input className="form-control col-sm-5 mr-sm-1 mx-auto" name="search" type="search" placeholder="Search for Articles" aria-label="Search" onChange={this.handleInputChange} />
+              <button className="btn btn-outline-primary my-2 my-sm-0 mr-auto" type="submit" onClick={this.newArticles}>Search</button>
+            </div>
           </div>
         </div>
         <div className="card-columns">
@@ -62,11 +75,11 @@ class Articles extends Component {
 
            this.state.articles.map(article => (
             <div className="card" key={article._id}>
-              <img className="card-image-top" src={article.img_url} alt={article.title+" img"} />
+              <img className="card-image-top" src={article.multimedia[4].url} alt={article.title+" img"} />
               <div className="card-body">
-                <h5 className="card-title">{article.title}</h5>
-                <Link className="card-text" to={"/articles/" + article._id}></Link>
-                <SaveBtn onClick={() => this.saveArticle(article._id)} />
+                <h5 className="card-title">{article.headline.main}</h5>
+                <a className="card-text" href={article.web_url}>link</a>
+                <SaveBtn onClick={() => this.saveArticle(article._id, {})} />
               </div>
             </div>
            ))

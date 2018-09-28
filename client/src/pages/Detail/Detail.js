@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../../components/Grid";
-import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
+import DeleteBtn from "../../components/DeleteBtn";
+import SaveBtn from "../../components/SaveBtn";
+
 
 class Detail extends Component {
   state = {
@@ -21,32 +22,42 @@ class Detail extends Component {
       .catch(err => console.log(err));
   }
 
+  saveArticle = id => {
+    API.saveArticle(id, {saved: true})
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  };
+
+  deleteArticle = id => {
+    API.deleteArticle(id)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  };
+
+
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col size="md-12">
-            <Jumbotron>
-              <h1>
-                {this.state.article.title} by {this.state.article.author}
-              </h1>
-            </Jumbotron>
-          </Col>
-        </Row>
-        <Row>
-          <Col size="md-10 md-offset-1">
-            <article>
-              <h1>Synopsis</h1>
-              <p>{this.state.article.synopsis}</p>
-            </article>
-          </Col>
-        </Row>
-        <Row>
-          <Col size="md-2">
-            <Link to="/">← Back to Authors</Link>
-          </Col>
-        </Row>
-      </Container>
+      <div className="container">
+        {this.state.article.saved ? (
+          <div className="card" key={this.state.article._id}>
+            <img className="card-image-top" src={this.state.article.img_url} alt={this.state.article.title+" img"} />
+            <div className="card-body">
+              <h5 className="card-title">{this.state.article.title}</h5>
+              <Link className="card-text" to={"/articles/" + this.state.article.url}></Link>
+              <DeleteBtn onClick={() => this.deleteArticle(this.state.article._id)} />
+            </div>
+          </div>
+        ) : (
+          <div className="card" key={this.state.article._id}>
+            <img className="card-image-top" src={this.state.article.img_url} alt={this.state.article.title+" img"} />
+            <div className="card-body">
+              <h5 className="card-title">{this.state.article.title}</h5>
+              <Link className="card-text" to={"/articles/" + this.state.article.url}></Link>
+              <SaveBtn onClick={() => this.saveArticle(this.state.article._id)} />
+            </div>
+        </div>
+      )}
+    </div>
     );
   }
 }

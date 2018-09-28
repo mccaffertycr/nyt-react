@@ -42,7 +42,7 @@ class Saved extends Component {
               <img className="card-image-top" src={article.img_url} alt={article.title+" img"} />
               <div className="card-body">
                 <h5 className="card-title">{article.title}</h5>
-                <Link className="card-text" to={"/articles/" + article._id}></Link>
+                <Link className="card-text" to={"/articles/" + article.url}></Link>
                 <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
               </div>
             </div>
