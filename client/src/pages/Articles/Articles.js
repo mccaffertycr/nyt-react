@@ -23,7 +23,6 @@ class Articles extends Component {
   newArticles = () => {
     API.searchArticles(this.state.search)
       .then((res) => {
-        console.log(res.data);
         this.setState({ articles: res.data.response.docs, search: '' })
       })
         
