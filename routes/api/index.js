@@ -3,5 +3,9 @@ const articleRoutes = require("./articles");
 
 // article routes
 router.use("/articles", articleRoutes);
+// key route
+router.use("/key", (req, res) => {
+  res.json({apiKey: process.env.NYT_API_KEY});
+});
 
 module.exports = router;

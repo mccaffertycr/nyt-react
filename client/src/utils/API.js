@@ -1,10 +1,10 @@
 import axios from "axios";
-const apiKey = process.env.NYT_API_KEY;
-
 
 export default {
   searchArticles: function(query) {
-    return axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json", {params: { "api-key": apiKey, "q": query}});
+    return axios.get("/api/key")
+                .then(res => axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json", {params: { "api-key": res.data.apiKey, "q": query}}))
+                .catch(err => console.log(err));
   },
   // Gets all articles
   getArticles: function() {

@@ -25,6 +25,8 @@
     "dotenv": "^6.0.0",
     "express": "^4.15.4",
     "if-env": "^1.0.4",
-    "mongoose": "^5.0.17"
+    "mongoose": "^5.0.17",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
   }
 }

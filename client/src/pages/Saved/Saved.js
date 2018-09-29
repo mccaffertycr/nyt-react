@@ -31,7 +31,7 @@ class Saved extends Component {
     return(
       <div className="container">
         <div className="col">
-          <div className="jumbotron">
+          <div className="jumbotron text-center">
             <h1>saved articles</h1>
           </div>
           <div className="card-columns">

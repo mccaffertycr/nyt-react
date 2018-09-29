@@ -23,7 +23,6 @@ class Articles extends Component {
   newArticles = () => {
     API.searchArticles(this.state.search)
       .then((res) => {
-        console.log(res);
         this.setState({ articles: res.data.response.docs, search: '' })
       })
         
@@ -32,7 +31,6 @@ class Articles extends Component {
 
   newArticle = (id) => {
     const selectedArticle = this.state.articles.filter(article => article._id === id);
-    console.log(selectedArticle);
 
     const newArticle = {
       title: selectedArticle[0].headline.main,
