@@ -23,6 +23,7 @@ class Articles extends Component {
   newArticles = () => {
     API.searchArticles(this.state.search)
       .then((res) => {
+        console.log(res.data);
         this.setState({ articles: res.data.response.docs, search: '' })
       })
         
@@ -34,7 +35,7 @@ class Articles extends Component {
 
     const newArticle = {
       title: selectedArticle[0].headline.main,
-      byline: selectedArticle[0].byline.original,
+      byline: selectedArticle[0].byline ? selectedArticle[0].byline.original : '',
       url: selectedArticle[0].web_url,
       img_url: selectedArticle[0].multimedia.length ? "https://static01.nyt.com/" + selectedArticle[0].multimedia[4].url : "https://screenshotlayer.com/images/assets/placeholder.png"
     }
@@ -44,13 +45,6 @@ class Articles extends Component {
       .catch(err => console.log(err));
   };
 
-  saveArticle = (id, newArticle) => {
-    API.saveArticle(id, newArticle)
-      .then(res => this.loadArticles())
-      .catch(err => console.log(err));
-  };
-
-  
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -86,7 +80,12 @@ class Articles extends Component {
               <img className="card-img-top" src={article.multimedia.length ? ("https://static01.nyt.com/"+article.multimedia[4].url) : ("https://screenshotlayer.com/images/assets/placeholder.png")} alt={article.title+" img"} />
               <div className="card-body">
                 <h5 className="card-title">{article.headline.main}</h5>
-                <p className="card-text">{article.byline.original}</p>
+                {
+                  article.byline ? 
+                  (<p className="card-text">{article.byline.original}</p>)
+                  : 
+                  (<p className="card-text"></p>)
+                }
                 <a className="card-text text-left" href={article.web_url}>link</a>
                 <SaveBtn  onClick={() => this.newArticle(article._id)} />
               </div>
