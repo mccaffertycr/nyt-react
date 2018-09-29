@@ -18,10 +18,6 @@ export default {
   deleteArticle: function(id) {
     return axios.delete("/api/articles/" + id);
   },
-  // Saves a article with the given id
-  saveArticle: function(id) {
-    return axios.put("/api/articles/" + id);
-  },
   // Saves a article to the database
   newArticle: function(articleData) {
     return axios.post("/api/articles", articleData);

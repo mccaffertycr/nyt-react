@@ -39,9 +39,10 @@ class Saved extends Component {
 
            this.state.articles.map(article => (
             <div className="card" key={article._id}>
-              <img className="card-image-top" src={article.img_url} alt={article.title+" img"} />
+              <img className="card-img-top" src={article.img_url} alt={article.title+"-img"} />
               <div className="card-body">
                 <h5 className="card-title">{article.title}</h5>
+                <p className="card-text">{article.byline}</p>
                 <Link className="card-text" to={"/articles/" + article.url}></Link>
                 <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
               </div>

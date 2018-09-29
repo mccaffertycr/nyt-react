@@ -9,7 +9,7 @@ class Articles extends Component {
   };
 
   componentDidMount() {
-    this.loadArticles();
+
   }
 
   loadArticles = () => {
@@ -30,9 +30,19 @@ class Articles extends Component {
     .catch(err => console.log(err));
   }
 
-  newArticle = id => {
-    API.newArticle(id)
-      .then(res => this.loadArticles())
+  newArticle = (id) => {
+    const selectedArticle = this.state.articles.filter(article => article._id === id);
+    console.log(selectedArticle);
+
+    const newArticle = {
+      title: selectedArticle[0].headline.main,
+      byline: selectedArticle[0].byline.original,
+      url: selectedArticle[0].web_url,
+      img_url: selectedArticle[0].multimedia.length ? "https://static01.nyt.com/" + selectedArticle[0].multimedia[4].url : "https://screenshotlayer.com/images/assets/placeholder.png"
+    }
+
+    API.newArticle(newArticle)
+      .then(res => console.log(res))
       .catch(err => console.log(err));
   };
 
@@ -75,11 +85,12 @@ class Articles extends Component {
 
            this.state.articles.map(article => (
             <div className="card" key={article._id}>
-              <img className="card-image-top" src={article.multimedia[4].url} alt={article.title+" img"} />
+              <img className="card-img-top" src={article.multimedia.length ? ("https://static01.nyt.com/"+article.multimedia[4].url) : ("https://screenshotlayer.com/images/assets/placeholder.png")} alt={article.title+" img"} />
               <div className="card-body">
                 <h5 className="card-title">{article.headline.main}</h5>
-                <a className="card-text" href={article.web_url}>link</a>
-                <SaveBtn onClick={() => this.saveArticle(article._id, {})} />
+                <p className="card-text">{article.byline.original}</p>
+                <a className="card-text text-left" href={article.web_url}>link</a>
+                <SaveBtn  onClick={() => this.newArticle(article._id)} />
               </div>
             </div>
            ))

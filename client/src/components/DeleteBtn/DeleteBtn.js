@@ -4,7 +4,7 @@ import React from "react";
 // That way we don't have to define them all individually
 const DeleteBtn = props => (
   <span className="btn btn-outline-danger" {...props}>
-    ✗
+    delete
   </span>
 );
 
