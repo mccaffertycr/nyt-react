@@ -14,8 +14,8 @@ class Articles extends Component {
 
   loadArticles = () => {
     API.getArticles()
-      .then(res =>
-        this.setState({ articles: res.data, search: '' })
+      .then(res => 
+        this.setState({ articles: res, search: '' })
       )
       .catch(err => console.log(err));
   };
@@ -23,7 +23,8 @@ class Articles extends Component {
   newArticles = () => {
     API.searchArticles(this.state.search)
       .then((res) => {
-        this.setState({ articles: res.data.response.docs, search: '' })
+        console.log(res);
+        this.setState({ articles: res.data, search: '' })
       })
         
     .catch(err => console.log(err));
@@ -66,35 +67,29 @@ class Articles extends Component {
           <div className="jumbotron text-center">
             <h1>New York Times React App</h1>
             <div className="row">
-              <input className="form-control col-sm-5 mr-sm-1 mx-auto" name="search" type="search" placeholder="Search for Articles" aria-label="Search" onChange={this.handleInputChange} />
+              <input className="form-control col-sm-5 mr-sm-1 mx-auto" name="search" type="search" placeholder="Search by Topic" aria-label="Search" onChange={this.handleInputChange} />
               <button className="btn btn-outline-primary my-2 my-sm-0 mr-auto" type="submit" onClick={this.newArticles}>Search</button>
             </div>
           </div>
         </div>
-        <div className="card-columns">
-          {this.state.articles.length ? (
-
-           this.state.articles.map(article => (
-            <div className="card" key={article._id}>
-              <img className="card-img-top" src={article.multimedia.length ? ("https://static01.nyt.com/"+article.multimedia[4].url) : ("https://screenshotlayer.com/images/assets/placeholder.png")} alt={article.title+" img"} />
-              <div className="card-body">
-                <h5 className="card-title">{article.headline.main}</h5>
-                {
-                  article.byline ? 
-                  (<p className="card-text">{article.byline.original}</p>)
-                  : 
-                  (<p className="card-text"></p>)
-                }
-                <a className="card-text text-left" href={article.web_url}>link</a>
-                <SaveBtn  onClick={() => this.newArticle(article._id)} />
+        <div className="list-group" >
+        {this.state.articles.length ? (
+          this.state.articles.map(article => (
+            <div className="list-group-item" key={article._id}>
+              <div className="row">
+                <h5 className="col-sm-8">{article.headline.main}</h5>
+                <div className="col-sm-4 text-right">
+                  <a className="mr-5" href={article.web_url}>view</a>
+                  <SaveBtn onClick={() => this.newArticle(article._id)} />
+                </div>
               </div>
             </div>
-           ))
-
-          ) : (
-            <h3>No Results</h3>
-          )}
-          </div>
+          ))
+        ) : (
+          <h3>No Results</h3>
+        )
+        }
+        </div>
       </div>
     );
   }

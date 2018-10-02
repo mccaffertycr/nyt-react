@@ -1,7 +1,24 @@
 const db = require("../models");
+const axios = require('axios');
 
 // Defining methods for the articlesController
 module.exports = {
+  getArticles: function(req, res) {
+    let params = { params: {
+        "api-key": process.env.NYT_API_KEY,
+        "q": req.body.query
+      }
+    }
+    axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json", params).then(function(data) {
+      res.json(data.data.response.docs);
+    }).catch(err => console.log(err));
+  },
+  create: function(req, res) {
+    db.Article
+      .create(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   findAll: function(req, res) {
     db.Article
       .find(req.query)
@@ -12,12 +29,6 @@ module.exports = {
   findById: function(req, res) {
     db.Article
       .findById(req.params.id)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  create: function(req, res) {
-    db.Article
-      .create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

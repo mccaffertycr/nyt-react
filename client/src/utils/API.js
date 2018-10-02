@@ -2,9 +2,11 @@ import axios from "axios";
 
 export default {
   searchArticles: function(query) {
-    return axios.get("/api/key")
-                .then(res => axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json", {params: { "api-key": res.data.apiKey, "q": query}}))
-                .catch(err => console.log(err));
+    return axios.post("/api/nyt", {
+      data: {
+        query: query
+      }
+    });
   },
   // Gets all articles
   getArticles: function() {
