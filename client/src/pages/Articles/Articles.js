@@ -8,18 +8,6 @@ class Articles extends Component {
     search: '',
   };
 
-  componentDidMount() {
-
-  }
-
-  loadArticles = () => {
-    API.getArticles()
-      .then(res => 
-        this.setState({ articles: res, search: '' })
-      )
-      .catch(err => console.log(err));
-  };
-
   newArticles = () => {
     API.searchArticles(this.state.search)
       .then((res) => {
@@ -30,7 +18,7 @@ class Articles extends Component {
     .catch(err => console.log(err));
   }
 
-  newArticle = (id) => {
+  saveArticle = (id) => {
     const selectedArticle = this.state.articles.filter(article => article._id === id);
 
     const newArticle = {
@@ -72,16 +60,18 @@ class Articles extends Component {
             </div>
           </div>
         </div>
-        <div className="list-group" >
+        <div className="card-columns" >
         {this.state.articles.length ? (
           this.state.articles.map(article => (
-            <div className="list-group-item" key={article._id}>
-              <div className="row">
-                <h5 className="col-sm-8">{article.headline.main}</h5>
-                <div className="col-sm-4 text-right">
-                  <a className="mr-5" href={article.web_url}>view</a>
-                  <SaveBtn onClick={() => this.newArticle(article._id)} />
-                </div>
+            <div className="card" key={article._id}>
+            <img className="card-img-top" src={article.multimedia.length ? ("https://static01.nyt.com/"+article.multimedia[4].url) : ("https://screenshotlayer.com/images/assets/placeholder.png")} alt={article.title+"-trumbnail"} />
+              <div className="card-body">
+                <h5 className="card-title">{article.headline.main}</h5>
+                  {article.byline.original ? <p className="card-text">{article.byline.original}</p> : <p className="card-text"></p> }
+                  <div className="card-text text-right">
+                    <a className="mr-3" href={article.web_url}>view</a>
+                    <SaveBtn onClick={() => this.saveArticle(article._id)} />
+                  </div>
               </div>
             </div>
           ))

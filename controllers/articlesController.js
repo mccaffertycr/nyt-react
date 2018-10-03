@@ -6,7 +6,7 @@ module.exports = {
   getArticles: function(req, res) {
     let params = { params: {
         "api-key": process.env.NYT_API_KEY,
-        "q": req.body.query
+        "q": req.params.query
       }
     }
     axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json", params).then(function(data) {

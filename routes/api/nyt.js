@@ -2,7 +2,7 @@ const router = require("express").Router();
 const articlesController = require("../../controllers/articlesController");
 
 // Matches with "/api/nyt"
-router.route("/")
-      .post(articlesController.getArticles);
+router.route("/:query")
+      .get(articlesController.getArticles);
 
 module.exports = router;

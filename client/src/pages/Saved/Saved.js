@@ -31,24 +31,23 @@ class Saved extends Component {
         <div className="jumbotron text-center">
           <h1>saved articles</h1>
         </div>
-        <div className="list-group" >
+        <div className="card-columns" >
           {this.state.articles.length ? (
            this.state.articles.map(article => (
-            <div className="list-group-item" key={article._id}>
-              <div className="row">
-                <h5 className="col-sm-8">{article.title}</h5>
-                <div className="col-sm-4 text-right">
-                  <a className="mr-5" href={article.url}>view</a>
+            <div className="card" key={article._id}>
+            <img className="card-img-top" src={article.img_url} alt={article.title+"-thumbnail"} />
+              <div className="card-body">
+                <h5 className="card-title">{article.title}</h5>
+                {article.byline ? <p className="card-text">{article.byline}</p> : <p className="card-text"></p>}
+                <div className="card-text text-right">
+                  <a className="mr-3" href={article.url}>view</a>
                   <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
                 </div>
-              </div>
-              <div className="row ml-auto">
-                <p>{article.byline}</p>
               </div>
             </div>
           ))
         ) : (
-          <h3>No Saved Articles Found</h3>
+          <h3>No Saved Articles</h3>
         )
         }
         </div>
