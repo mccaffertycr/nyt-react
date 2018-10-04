@@ -28,7 +28,7 @@ class Articles extends Component {
       img_url: selectedArticle[0].multimedia.length ? "https://static01.nyt.com/" + selectedArticle[0].multimedia[4].url : "https://screenshotlayer.com/images/assets/placeholder.png"
     }
 
-    API.newArticle(newArticle)
+    API.saveArticle(newArticle)
       .then(res => console.log(res))
       .catch(err => console.log(err));
   };
@@ -67,7 +67,7 @@ class Articles extends Component {
             <img className="card-img-top" src={article.multimedia.length ? ("https://static01.nyt.com/"+article.multimedia[4].url) : ("https://screenshotlayer.com/images/assets/placeholder.png")} alt={article.title+"-trumbnail"} />
               <div className="card-body">
                 <h5 className="card-title">{article.headline.main}</h5>
-                  {article.byline.original ? <p className="card-text">{article.byline.original}</p> : <p className="card-text"></p> }
+                  {/* {article.byline.original ? <p className="card-text">{article.byline.original}</p> : <p className="card-text"></p> } */}
                   <div className="card-text text-right">
                     <a className="mr-3" href={article.web_url}>view</a>
                     <SaveBtn onClick={() => this.saveArticle(article._id)} />
